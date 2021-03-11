@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { Form, Button } from 'react-bootstrap';
 
 import './registration-view.scss';
+import axios from 'axios';
 
-export function RegisterView(props) {
+export function RegistrationView(props) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,8 +15,21 @@ export function RegisterView(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, password, email, birthday);
-    props.onRegister('test');
+    
+    axios.post('http://phantasmophobia.herokuapp.com/users', {
+      username: username,
+      password: password,
+      email: email,
+      birthday: birthday
+    })
+    .then(response => {
+      const data = response.data;
+      console.log(data);
+      window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+    })
+    .catch(e => {
+      console.log('error registering the user')
+    });
   };
 
   return (
@@ -77,7 +91,7 @@ export function RegisterView(props) {
   );
 }
 
-RegisterView.propTypes = {
+RegistrationView.propTypes = {
   register: PropTypes.shape({
     username: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
