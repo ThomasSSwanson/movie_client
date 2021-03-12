@@ -10,11 +10,6 @@ import axios from 'axios';
 
 
 export function ProfileUpdate(props) {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [birthday, setBirthday] = useState('');
 
   const schema = yup.object().shape({
     password: yup.string().required(),
@@ -23,36 +18,6 @@ export function ProfileUpdate(props) {
     confirmPassword: yup.string().required(),
     birthday: yup.date().required()
   });
-
-
-
-//   const handleUpdate = (e) => {
-    
-
-//     let token = localStorage.getItem('token');
-
-  
-//     axios.put(`http://phantasmophobia.herokuapp.com/users/update/${localStorage.getItem('user')}`, {
-//       username: username,
-//       password: password,
-//       email: email,
-//       password: password,
-//       birthday: birthday
-//     },
-//     {
-//       headers: { Authorization: `Bearer ${token}`}
-//     })
-//     .then(response => {
-//       const data = response.data;
-//       console.log(data);
-//       alert("Your profile was updated successfully");
-//       localStorage.setItem('user', data.username)
-//       window.open(`/users/${username}`, '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
-//     })
-//     .catch(e => {
-//       console.log('error changing user information')
-//     });
-// };
 
   return (
     <Formik

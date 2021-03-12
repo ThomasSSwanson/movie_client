@@ -13,6 +13,8 @@ import { LoginView } from '../login-view/login-view';
 import { ProfileView } from '../profile-view/profile-view';
 import { RegistrationView } from '../registration-view/registration-view';
 import { ProfileUpdate } from '../profile-update/profile-update'
+import { DirectorView } from '../director-view/director-view'
+import { GenreView } from '../genre-view/genre-view'
 
 import './main-view.scss';
 
@@ -112,11 +114,11 @@ export class MainView extends React.Component {
           
           <Route path="/directors/:name" render={({ match }) => {
             if (!movies) return <div className="main-view"/>;
-            return <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director}/>}}/>
+            return <DirectorView movies={ movies } director={movies.find(m => m.Director.Name === match.params.name).Director}/>}}/>
           
           <Route exact path="/genres/:name" render={({ match }) => {
             if (!movies) return <div className="main-view"/>;
-            return <GenreView genre={movies.find(m => m.Genre.Name === match.params.name).Genre}/>}}/>
+            return <GenreView movies={ movies } genre={movies.find(m => m.Genre.Name === match.params.name).Genre}/>}}/>
 
           <Route path="/users/:username" render={() => <ProfileView movies = {movies}/>}/>
 
