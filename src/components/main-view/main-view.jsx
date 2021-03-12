@@ -10,7 +10,9 @@ import Button from 'react-bootstrap/Button'
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
+import { ProfileView } from '../profile-view/profile-view';
 import { RegistrationView } from '../registration-view/registration-view';
+import { ProfileUpdate } from '../profile-update/profile-update'
 
 import './main-view.scss';
 
@@ -92,9 +94,10 @@ export class MainView extends React.Component {
     return (
       <Router>
         <Row className="main-view justify-content-md-center">
+    
           <header>
-            <Link to={`/register`}>
-              <Button variant="link">Register</Button>
+            <Link to={`/users/${localStorage.getItem('user')}`}>
+              {localStorage.getItem('user')}
             </Link>
             <Button variant="outline-dark" onClick={() => this.onLogout()}>Logout</Button>
           </header>
@@ -114,6 +117,10 @@ export class MainView extends React.Component {
           <Route exact path="/genres/:name" render={({ match }) => {
             if (!movies) return <div className="main-view"/>;
             return <GenreView genre={movies.find(m => m.Genre.Name === match.params.name).Genre}/>}}/>
+
+          <Route path="/users/:username" render={() => <ProfileView movies = {movies}/>}/>
+
+          <Route path="/users/update/:username" render={() => <ProfileUpdate/>}/>
         </Row>
       </Router>
     );
