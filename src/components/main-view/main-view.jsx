@@ -120,9 +120,9 @@ export class MainView extends React.Component {
             if (!movies) return <div className="main-view"/>;
             return <GenreView movies={ movies } genre={movies.find(m => m.Genre.Name === match.params.name).Genre}/>}}/>
 
-          <Route path="/users/:username" render={() => <ProfileView movies = {movies}/>}/>
+          <Route exact path="/users/:username" render={() => <ProfileView movies = {movies}/>}/>
 
-          <Route path="/users/update/:username" render={() => <ProfileUpdate/>}/>
+          <Route exact path="/users/update/:username" render={() => <ProfileUpdate/>}/>
         </Row>
       </Router>
     );
