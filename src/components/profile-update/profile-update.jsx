@@ -65,8 +65,7 @@ export function ProfileUpdate(props) {
         errors,
       }) => (
         <Form noValidate onSubmit={handleSubmit}>
-          <Form.Row>
-            <Form.Group as={Col} md="4" controlId="validationFormikUsername">
+            <Form.Group controlId="validationFormikUsername">
               <Form.Label>Username</Form.Label>
               
                 <Form.Control
@@ -82,10 +81,8 @@ export function ProfileUpdate(props) {
                   {errors.username}
                 </Form.Control.Feedback>
             </Form.Group>
-          </Form.Row>
 
-          <Form.Row>
-            <Form.Group as={Col} md="6" controlId="validationFormik03">
+            <Form.Group controlId="validationFormik03">
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
@@ -100,7 +97,7 @@ export function ProfileUpdate(props) {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group as={Col} md="3" controlId="validationFormik04">
+            <Form.Group controlId="validationFormik04">
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
                 type="password"
@@ -115,7 +112,7 @@ export function ProfileUpdate(props) {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group as={Col} md="3" controlId="validationFormik05">
+            <Form.Group controlId="validationFormik05">
               <Form.Label>Email</Form.Label>
               <Form.Control
                 type="email"
@@ -130,7 +127,7 @@ export function ProfileUpdate(props) {
               </Form.Control.Feedback>
             </Form.Group>
 
-            <Form.Group as={Col} md="3" controlId="validationFormik06">
+            <Form.Group controlId="validationFormik06">
               <Form.Label>Birthday</Form.Label>
               <Form.Control
                 type="date"
@@ -144,7 +141,6 @@ export function ProfileUpdate(props) {
                 {errors.birthday}
               </Form.Control.Feedback>
             </Form.Group>
-          </Form.Row>
       
           <Button type="submit">Submit form</Button>
         </Form>
