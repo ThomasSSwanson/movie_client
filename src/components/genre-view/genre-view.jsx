@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Jumbotron, Row, Col, Card, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom';
+import { Jumbotron, Row, Col } from 'react-bootstrap'
 import { MovieCard } from '../movie-card/movie-card'
 
 export class GenreView extends React.Component {

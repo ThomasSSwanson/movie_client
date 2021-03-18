@@ -66665,7 +66665,7 @@ var DirectorView = /*#__PURE__*/function (_React$Component) {
         className: "d-flex row mt-3 ml-1"
       }, movies.map(function (movie) {
         if (movie.Director.Name === director.Name) {
-          return _react.default.createElement(MovieCard, {
+          return _react.default.createElement(_movieCard.MovieCard, {
             key: movie._id,
             movie: movie
           });
@@ -66691,8 +66691,6 @@ var _react = _interopRequireDefault(require("react"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _reactBootstrap = require("react-bootstrap");
-
-var _reactRouterDom = require("react-router-dom");
 
 var _movieCard = require("../movie-card/movie-card");
 
@@ -66771,7 +66769,7 @@ var GenreView = /*#__PURE__*/function (_React$Component) {
 }(_react.default.Component);
 
 exports.GenreView = GenreView;
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx"}],"components/main-view/main-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","../movie-card/movie-card":"components/movie-card/movie-card.jsx"}],"components/main-view/main-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -66984,9 +66982,9 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           });
           return _react.default.createElement(_directorView.DirectorView, {
             movies: movies,
-            director: movies.find(function (m) {
+            director: movies.length > 0 ? movies.find(function (m) {
               return m.Director.Name === match.params.name;
-            }).Director
+            }).Director : match.params.name
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
@@ -66999,9 +66997,9 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           });
           return _react.default.createElement(_genreView.GenreView, {
             movies: movies,
-            genre: movies.find(function (m) {
+            genre: movies.length > 0 ? movies.find(function (m) {
               return m.Genre.Name === match.params.name;
-            }).Genre
+            }).Genre : match.params.name
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
@@ -67122,7 +67120,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50614" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57070" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

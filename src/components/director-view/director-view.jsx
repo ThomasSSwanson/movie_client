@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Jumbotron, Row, Col, Card, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-import { MovieCar } from '../movie-card/movie-card'
+import { MovieCard } from '../movie-card/movie-card'
 
 export class DirectorView extends React.Component {
   render() {
