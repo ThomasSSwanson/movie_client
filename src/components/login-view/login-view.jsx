@@ -9,8 +9,24 @@ import './login-view.scss'
 import axios from 'axios';
 
 export function LoginView(props) {
-  const [ username, setUsername ] = useState('');
-  const [ password, setPassword ] = useState('');
+  // const [ username, setUsername ] = useState('');
+  // const [ password, setPassword ] = useState('');
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   /* Send a request to the server for authentication */
+  //   axios.post('http://phantasmophobia.herokuapp.com/login', {
+  //     username: username,
+  //     password: password
+  //   })
+  //   .then(response => {
+  //     const data = response.data;
+  //     props.onLoggedIn(data);
+  //   })
+  //   .catch(e => {
+  //     console.log('no such user')
+  //   });
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();

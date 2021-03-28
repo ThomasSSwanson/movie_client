@@ -10,7 +10,8 @@ import { setMovies } from '../../action/action';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
+import { Nav, Navbar, Form } from 'react-bootstrap'
 
 import MoviesList from '../movies-list/movies-list';
 import { MovieView } from '../movie-view/movie-view';
@@ -86,7 +87,31 @@ class MainView extends React.Component {
     if (!movies) return <div className="main-view"/>;
 
     return (
+      
       <Router>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#features">Features</Nav.Link>
+            <Nav.Link href="#pricing">Pricing</Nav.Link>
+          </Nav>
+          <Form inline>
+            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+            <Button variant="outline-info">Search</Button>
+          </Form>
+        </Navbar>
+        <br />
+        <Navbar bg="primary" variant="dark">
+          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#features">Features</Nav.Link>
+            <Nav.Link href="#pricing">Pricing</Nav.Link>
+          </Nav>
+        </Navbar>
+
+      
         <Row className="main-view justify-content-md-center">
     
           <header>
