@@ -13,7 +13,7 @@ import { setUser } from '../../action/action';
 
 export function ProfileUpdate(props) {
 
-  const { user, setUser } = props;
+  const { user, setUser, onGoBack } = props;
 
   const schema = yup.object().shape({
     password: yup.string().required(),
@@ -34,7 +34,6 @@ export function ProfileUpdate(props) {
           username: values.username,
           password: values.password,
           email: values.email,
-          password: values.password,
           birthday: values.birthday
         },
         {
@@ -46,7 +45,7 @@ export function ProfileUpdate(props) {
           alert("Your profile was updated successfully");
           localStorage.setItem('user', data.username)
           props.setUser(data);
-          window.open(`/users/${localStorage.getItem('user')}`, '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+          props.onGoBack();
         })
         .catch(e => {
           console.log('error changing user information')

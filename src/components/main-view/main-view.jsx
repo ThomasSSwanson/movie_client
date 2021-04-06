@@ -91,7 +91,7 @@ class MainView extends React.Component {
       <Router>
         <Navbar bg="dark" variant="dark">
           <Navbar.Brand href="#home">Horror Hill</Navbar.Brand>
-          <Nav className="mr-auto">
+          <Nav className="mr-auto nav-login">
             <Link to={`/users/${localStorage.getItem('user')}`}>
               {localStorage.getItem('user')}
             </Link>
@@ -128,7 +128,7 @@ class MainView extends React.Component {
 
             <Route exact path="/users/:username" render={() => <ProfileView movies = {movies}/>}/>
 
-            <Route exact path="/users/update/:username" render={() => <ProfileUpdate/>}/>
+            <Route exact path="/users/update/:username" onGoBack={() => history.goBack()} render={() => <ProfileUpdate/>}/>
           </Row>
         </Container>
       </Router>

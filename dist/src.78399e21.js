@@ -68954,7 +68954,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function ProfileUpdate(props) {
   var user = props.user,
-      setUser = props.setUser;
+      setUser = props.setUser,
+      onGoBack = props.onGoBack;
   var schema = yup.object().shape({
     password: yup.string().required(),
     username: yup.string().required(),
@@ -68983,7 +68984,7 @@ function ProfileUpdate(props) {
         alert("Your profile was updated successfully");
         localStorage.setItem('user', data.username);
         props.setUser(data);
-        window.open("/users/".concat(localStorage.getItem('user')), '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+        props.onGoBack();
       }).catch(function (e) {
         console.log('error changing user information');
       });
@@ -69429,7 +69430,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       }, _react.default.createElement(_reactBootstrap.Navbar.Brand, {
         href: "#home"
       }, "Horror Hill"), _react.default.createElement(_reactBootstrap.Nav, {
-        className: "mr-auto"
+        className: "mr-auto nav-login"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/users/".concat(localStorage.getItem('user'))
       }, localStorage.getItem('user')), _react.default.createElement(_Button.default, {
@@ -69522,6 +69523,9 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       }), _react.default.createElement(_reactRouterDom.Route, {
         exact: true,
         path: "/users/update/:username",
+        onGoBack: function onGoBack() {
+          return history.goBack();
+        },
         render: function render() {
           return _react.default.createElement(_profileUpdate.default, null);
         }
@@ -69733,7 +69737,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62619" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65256" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
