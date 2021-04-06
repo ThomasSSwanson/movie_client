@@ -91,10 +91,6 @@ class MainView extends React.Component {
       <Router>
         <Navbar bg="dark" variant="dark">
           <Navbar.Brand href="#home">Horror Hill</Navbar.Brand>
-          <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-dark">Search</Button>
-          </Form>
           <Nav className="mr-auto">
             <Link to={`/users/${localStorage.getItem('user')}`}>
               {localStorage.getItem('user')}
@@ -103,7 +99,7 @@ class MainView extends React.Component {
           </Nav>
         </Navbar>
 
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="dark" variant="dark" className="lower-nav">
           <Nav className="mr-auto">
             <Nav.Link to={`/movies`}href="#home">Account</Nav.Link>
             <Nav.Link href="#features">Movies</Nav.Link>

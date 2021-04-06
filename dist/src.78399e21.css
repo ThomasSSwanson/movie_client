@@ -1,5 +1,20 @@
+.card-body {
+  overflow: hidden;
+  max-height: 40px;
+}
+
+.card {
+  background-color: #343a40;
+  color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(250, 5, 5, 0.2);
+  margin: 10px;
+}
 nav {
   height: 40px;
+}
+
+.lower-nav {
+  margin-bottom: 10px;
 }
 .app-container {
   background-color: #1E2127;

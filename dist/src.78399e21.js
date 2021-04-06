@@ -53483,19 +53483,14 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
     key: "render",
     value: function render() {
       var movie = this.props.movie;
-      return _react.default.createElement(_Col.default, {
-        xs: 4,
-        md: 2,
-        lg: 2,
-        xl: 2
-      }, _react.default.createElement(_Card.default, null, _react.default.createElement(_Card.default.Img, {
+      return _react.default.createElement(_Card.default, null, _react.default.createElement(_Card.default.Img, {
         variant: "top",
         src: movie.ImagePath
-      }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.Title), _react.default.createElement(_Card.default.Text, null, movie.Description), _react.default.createElement(_reactRouterDom.Link, {
+      }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Text, null, movie.Description), _react.default.createElement(_reactRouterDom.Link, {
         to: "/movies/".concat(movie._id)
       }, _react.default.createElement(_Button.default, {
         variant: "link"
-      }, "Open")))));
+      }, "Open"))));
     }
   }]);
 
@@ -53537,6 +53532,10 @@ var _visibilityFilterInput = _interopRequireDefault(require("../visibility-filte
 
 var _movieCard = require("../movie-card/movie-card");
 
+var _Row = _interopRequireDefault(require("react-bootstrap/Row"));
+
+var _Col = _interopRequireDefault(require("react-bootstrap/Col"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -53564,18 +53563,22 @@ function MoviesList(props) {
     className: "movies-list"
   }, _react.default.createElement(_visibilityFilterInput.default, {
     visibilityFilter: visibilityFilter
-  }), filteredMovies.map(function (m) {
-    return _react.default.createElement(_movieCard.MovieCard, {
+  }), _react.default.createElement(_Row.default, {
+    className: "justify-content-md-center"
+  }, filteredMovies.map(function (m) {
+    return _react.default.createElement(_Col.default, {
       key: m._id,
+      md: filteredMovies.length === 1 ? 12 : filteredMovies.length === 2 ? 6 : filteredMovies.length === 3 ? 4 : 3
+    }, _react.default.createElement(_movieCard.MovieCard, {
       movie: m
-    });
-  }));
+    }));
+  })));
 }
 
 var _default = (0, _reactRedux.connect)(mapStateToProps)(MoviesList);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","../visibility-filter-input/visibility-filter-input":"components/visibility-filter-input/visibility-filter-input.jsx","../movie-card/movie-card":"components/movie-card/movie-card.jsx"}],"components/movie-view/movie-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-redux":"../node_modules/react-redux/es/index.js","../visibility-filter-input/visibility-filter-input":"components/visibility-filter-input/visibility-filter-input.jsx","../movie-card/movie-card":"components/movie-card/movie-card.jsx","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js"}],"components/movie-view/movie-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -69425,15 +69428,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         variant: "dark"
       }, _react.default.createElement(_reactBootstrap.Navbar.Brand, {
         href: "#home"
-      }, "Horror Hill"), _react.default.createElement(_reactBootstrap.Form, {
-        inline: true
-      }, _react.default.createElement(_reactBootstrap.FormControl, {
-        type: "text",
-        placeholder: "Search",
-        className: "mr-sm-2"
-      }), _react.default.createElement(_Button.default, {
-        variant: "outline-dark"
-      }, "Search")), _react.default.createElement(_reactBootstrap.Nav, {
+      }, "Horror Hill"), _react.default.createElement(_reactBootstrap.Nav, {
         className: "mr-auto"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/users/".concat(localStorage.getItem('user'))
@@ -69444,7 +69439,8 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         }
       }, "Logout"))), _react.default.createElement(_reactBootstrap.Navbar, {
         bg: "dark",
-        variant: "dark"
+        variant: "dark",
+        className: "lower-nav"
       }, _react.default.createElement(_reactBootstrap.Nav, {
         className: "mr-auto"
       }, _react.default.createElement(_reactBootstrap.Nav.Link, {
@@ -69737,7 +69733,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52341" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62619" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
