@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik'
 import * as yup from 'yup';
 
 import { Form, Button, Col } from 'react-bootstrap';
-
+import { connect } from 'react-redux';
 import './profile-update.scss';
 import axios from 'axios';
+import { setUser } from '../../action/action';
+
 
 
 export function ProfileUpdate(props) {
+
+  const { user, setUser } = props;
 
   const schema = yup.object().shape({
     password: yup.string().required(),
@@ -41,6 +45,7 @@ export function ProfileUpdate(props) {
           console.log(data);
           alert("Your profile was updated successfully");
           localStorage.setItem('user', data.username)
+          props.setUser(data);
           window.open(`/users/${localStorage.getItem('user')}`, '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
         })
         .catch(e => {
@@ -148,3 +153,9 @@ export function ProfileUpdate(props) {
     </Formik>
   );
 }
+
+let mapStateToProps = state => {
+  return { user: state.user }
+}
+
+export default connect(mapStateToProps, { setUser } )(ProfileUpdate);

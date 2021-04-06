@@ -10,14 +10,15 @@ import { setMovies } from '../../action/action';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
+import { Nav, Navbar, Form, FormControl, Container } from 'react-bootstrap'
 
 import MoviesList from '../movies-list/movies-list';
 import { MovieView } from '../movie-view/movie-view';
-import { LoginView } from '../login-view/login-view';
+import  LoginView from '../login-view/login-view';
 import { ProfileView } from '../profile-view/profile-view';
 import { RegistrationView } from '../registration-view/registration-view';
-import { ProfileUpdate } from '../profile-update/profile-update'
+import ProfileUpdate from '../profile-update/profile-update'
 import { DirectorView } from '../director-view/director-view'
 import { GenreView } from '../genre-view/genre-view'
 
@@ -86,36 +87,50 @@ class MainView extends React.Component {
     if (!movies) return <div className="main-view"/>;
 
     return (
+
       <Router>
-        <Row className="main-view justify-content-md-center">
-    
-          <header>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href="#home">Horror Hill</Navbar.Brand>
+          <Nav className="mr-auto">
             <Link to={`/users/${localStorage.getItem('user')}`}>
               {localStorage.getItem('user')}
             </Link>
-            <Button variant="outline-dark" onClick={() => this.onLogout()}>Logout</Button>
-          </header>
+            <Button variant="outline-light" onClick={() => this.onLogout()}>Logout</Button>
+          </Nav>
+        </Navbar>
 
-          <Route exact path="/" render={() => {
-            if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>;
-            return <MoviesList movies={ movies }/>}}/>
-          
-          <Route path="/register" render={() => <RegistrationView />} />
+        <Navbar bg="dark" variant="dark" className="lower-nav">
+          <Nav className="mr-auto">
+            <Nav.Link to={`/movies`}href="#home">Account</Nav.Link>
+            <Nav.Link href="#features">Movies</Nav.Link>
+            <Nav.Link href="#pricing">About</Nav.Link>
+          </Nav>
+        </Navbar>
 
-          <Route path="/movies/:movieId" render={({ match }) => <Col md={8}><MovieView movie={movies.find(m => m._id === match.params.movieId)}/></Col>}/>
-          
-          <Route path="/directors/:name" render={({ match }) => {
-            if (!movies) return <div className="main-view"/>;
-            return <DirectorView movies={ movies } director={movies.length > 0 ?  movies.find(m => m.Director.Name === match.params.name).Director : match.params.name}/>}}/>
-          
-          <Route exact path="/genres/:name" render={({ match }) => {
-            if (!movies) return <div className="main-view"/>;
-            return <GenreView movies={ movies } genre={movies.length > 0 ?  movies.find(m => m.Genre.Name === match.params.name).Genre : match.params.name}/>}}/>
+        <Container>
+          <Row className="main-view justify-content-md-center">
 
-          <Route exact path="/users/:username" render={() => <ProfileView movies = {movies}/>}/>
+            <Route exact path="/" render={() => {
+              if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>;
+              return <MoviesList movies={ movies }/>}}/>
+            
+            <Route path="/register" render={() => <RegistrationView />} />
 
-          <Route exact path="/users/update/:username" render={() => <ProfileUpdate/>}/>
-        </Row>
+            <Route path="/movies/:movieId" render={({ match }) => <Col md={8}><MovieView movie={movies.find(m => m._id === match.params.movieId)}/></Col>}/>
+            
+            <Route path="/directors/:name" render={({ match }) => {
+              if (!movies) return <div className="main-view"/>;
+              return <DirectorView movies={ movies } director={movies.length > 0 ?  movies.find(m => m.Director.Name === match.params.name).Director : match.params.name}/>}}/>
+            
+            <Route exact path="/genres/:name" render={({ match }) => {
+              if (!movies) return <div className="main-view"/>;
+              return <GenreView movies={ movies } genre={movies.length > 0 ?  movies.find(m => m.Genre.Name === match.params.name).Genre : match.params.name}/>}}/>
+
+            <Route exact path="/users/:username" render={() => <ProfileView movies = {movies}/>}/>
+
+            <Route exact path="/users/update/:username" render={() => <ProfileUpdate/>}/>
+          </Row>
+        </Container>
       </Router>
     );
   }

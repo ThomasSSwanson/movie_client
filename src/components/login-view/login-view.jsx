@@ -1,27 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import PropTypes from 'prop-types';
+import axios from 'axios';
+import { connect } from 'react-redux';
 
 import { Link } from 'react-router-dom';
 
 import './login-view.scss'
-import axios from 'axios';
+
+import { setUser } from '../../action/action';
+
 
 export function LoginView(props) {
-  const [ username, setUsername ] = useState('');
-  const [ password, setPassword ] = useState('');
+  const { user, setUser } = props;
 
   const handleSubmit = (e) => {
     e.preventDefault();
     /* Send a request to the server for authentication */
     axios.post('http://phantasmophobia.herokuapp.com/login', {
-      username: username,
-      password: password
+      username: e.target[0].value,
+      password: e.target[1].value
     })
     .then(response => {
       const data = response.data;
       props.onLoggedIn(data);
+      props.setUser(data);
     })
     .catch(e => {
       console.log('no such user')
@@ -29,17 +33,17 @@ export function LoginView(props) {
   };
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Form.Group controlId="formUsername">
         <Form.Label>Username:</Form.Label>
-        <Form.Control type="text" value={username} onChange={e => setUsername(e.target.value)} />
+        <Form.Control type="text" />
       </Form.Group>
 
       <Form.Group controlId="formPassword">
         <Form.Label>Password:</Form.Label>
-        <Form.Control type="password" value={password} onChange={e => setPassword(e.target.value)} />
+        <Form.Control type="password" />
       </Form.Group>
-      <Button variant="primary" type="submit" onClick={handleSubmit}>
+      <Button variant="primary" type="submit">
         Submit
       </Button>
       <Link to={`/register`}>
@@ -50,10 +54,11 @@ export function LoginView(props) {
 }
 
 LoginView.propTypes = {
-  user: PropTypes.shape({
-    username: PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired,
-  }),
   onLoggedIn: PropTypes.func.isRequired,
-  onRegister: PropTypes.func,
 };
+
+let mapStateToProps = state => {
+  return { user: state.user }
+}
+
+export default connect(mapStateToProps, { setUser } )(LoginView);

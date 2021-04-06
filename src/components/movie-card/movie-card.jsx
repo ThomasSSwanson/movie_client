@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
+import Col from 'react-bootstrap/Col'
 
 import { Link } from "react-router-dom";
-
-import './movie-card.scss'
+import './movie-card.scss';
 
 export class MovieCard extends React.Component {
   render() {
@@ -13,16 +13,15 @@ export class MovieCard extends React.Component {
     const { movie } = this.props;
 
     return (
-      <Card>
-        <Card.Img variant="top" src={movie.ImagePath} />
-        <Card.Body>
-          <Card.Title>{movie.Title}</Card.Title>
-          <Card.Text>{movie.Description}</Card.Text>
-          <Link to={`/movies/${movie._id}`}>
-            <Button variant="link">Open</Button>
-          </Link>
-        </Card.Body>
-      </Card>
+        <Card>
+          <Card.Img variant="top" src={movie.ImagePath} />
+          <Card.Body>
+            <Card.Text>{movie.Description}</Card.Text>
+            <Link to={`/movies/${movie._id}`}>
+              <Button variant="link">Open</Button>
+            </Link>
+          </Card.Body>
+        </Card>
     );
   }
 }

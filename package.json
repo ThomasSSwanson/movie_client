@@ -18,8 +18,12 @@
   "homepage": "https://github.com/ThomasSSwanson/movie_client#readme",
   "dependencies": {
     "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
     "email-validator": "^2.0.4",
     "formik": "^2.2.6",
+    "jquery": "^3.6.0",
+    "parcel-bundler": "^1.10.1",
+    "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.1",
@@ -28,8 +32,7 @@
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.9",
-    "yup": "^0.32.9",
-    "parcel-bundler": "^1.10.1"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

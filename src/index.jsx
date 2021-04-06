@@ -4,7 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import Container from 'react-bootstrap/Container';
 
 import MainView  from './components/main-view/main-view';
 import moviesApp from './reducer/reducer';
@@ -21,9 +20,7 @@ class MyFlixApplication extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Container>
           <MainView />
-        </Container>
       </Provider>
     );
   }
