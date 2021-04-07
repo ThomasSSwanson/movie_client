@@ -44,8 +44,8 @@ export function ProfileUpdate(props) {
           console.log(data);
           alert("Your profile was updated successfully");
           localStorage.setItem('user', data.username)
-          props.setUser(data);
-          props.onGoBack();
+          setUser(data);
+          onGoBack();
         })
         .catch(e => {
           console.log('error changing user information')
@@ -53,10 +53,10 @@ export function ProfileUpdate(props) {
       }}
       initialValues={{
         password: '',
-        username: '',
+        username: user.username || '',
         confirmPassword: '',
-        email: '',
-        birthday: ''
+        email: user.email || '',
+        birthday: user.birthday || ''
       }}
     >
       {({

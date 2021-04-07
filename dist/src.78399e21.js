@@ -38046,7 +38046,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.setMovies = setMovies;
 exports.setFilter = setFilter;
 exports.setUser = setUser;
-exports.SET_USER = exports.SET_FILTER = exports.SET_MOVIES = void 0;
+exports.setFavorite = setFavorite;
+exports.SET_FAVORITE = exports.SET_USER = exports.SET_FILTER = exports.SET_MOVIES = void 0;
 
 var _reactDom = require("react-dom");
 
@@ -38056,6 +38057,8 @@ var SET_FILTER = 'SET_FILTER';
 exports.SET_FILTER = SET_FILTER;
 var SET_USER = 'SET_USER';
 exports.SET_USER = SET_USER;
+var SET_FAVORITE = 'SET_FAVORITE';
+exports.SET_FAVORITE = SET_FAVORITE;
 
 function setMovies(value) {
   return {
@@ -38074,6 +38077,13 @@ function setFilter(value) {
 function setUser(value) {
   return {
     type: SET_USER,
+    value: value
+  };
+}
+
+function setFavorite(value) {
+  return {
+    type: SET_FAVORITE,
     value: value
   };
 }
@@ -53486,11 +53496,11 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
       return _react.default.createElement(_Card.default, null, _react.default.createElement(_Card.default.Img, {
         variant: "top",
         src: movie.ImagePath
-      }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Text, null, movie.Description), _react.default.createElement(_reactRouterDom.Link, {
+      }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Text, null, movie.Description)), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_reactRouterDom.Link, {
         to: "/movies/".concat(movie._id)
       }, _react.default.createElement(_Button.default, {
         variant: "link"
-      }, "Open"))));
+      }, "Read more"))));
     }
   }]);
 
@@ -53589,7 +53599,7 @@ module.hot.accept(reloadCSS);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MovieView = void 0;
+exports.default = exports.MovieView = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -53600,6 +53610,12 @@ var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 var _reactRouterDom = require("react-router-dom");
 
 require("./movie-view.scss");
+
+var _action = require("../../action/action");
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _reactRedux = require("react-redux");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53630,19 +53646,38 @@ var MovieView = /*#__PURE__*/function (_React$Component) {
 
   var _super = _createSuper(MovieView);
 
-  function MovieView() {
+  function MovieView(props) {
     var _this;
 
     _classCallCheck(this, MovieView);
 
-    _this = _super.call(this);
+    _this = _super.call(this, props);
     _this.state = {};
     return _this;
   }
 
   _createClass(MovieView, [{
+    key: "onFavorite",
+    value: function onFavorite(id) {
+      var token = this.props.user.token;
+      console.log(token);
+
+      _axios.default.post("https://phantasmophobia.herokuapp.com/users/".concat(this.props.user.user.username, "/movies/").concat(id), {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        // #1 Assign the result to the redux state
+        console.log(response.data); // this.props.setMovies(response.data);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var movie = this.props.movie;
       if (!movie) return null;
       return _react.default.createElement("div", {
@@ -53678,7 +53713,12 @@ var MovieView = /*#__PURE__*/function (_React$Component) {
         to: "/directors/".concat(movie.Director.Name)
       }, _react.default.createElement(_Button.default, {
         variant: "link"
-      }, movie.Director.Name))));
+      }, movie.Director.Name))), _react.default.createElement(_Button.default, {
+        onClick: function onClick() {
+          return _this2.onFavorite(movie._id);
+        },
+        variant: "link"
+      }, "Favorite this"));
     }
   }]);
 
@@ -53686,25 +53726,39 @@ var MovieView = /*#__PURE__*/function (_React$Component) {
 }(_react.default.Component);
 
 exports.MovieView = MovieView;
-MovieView.propTypes = {
-  movie: _propTypes.default.shape({
-    Title: _propTypes.default.string.isRequired,
-    Description: _propTypes.default.string.isRequired,
-    ImagePath: _propTypes.default.string.isRequired,
-    Genre: _propTypes.default.shape({
-      Name: _propTypes.default.string,
-      Description: _propTypes.default.string
-    }),
-    Director: _propTypes.default.shape({
-      Name: _propTypes.default.string,
-      Bio: _propTypes.default.string,
-      Birth: _propTypes.default.string,
-      Death: _propTypes.default.string
-    }),
-    Featured: _propTypes.default.bool
-  }).isRequired
-};
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./movie-view.scss":"components/movie-view/movie-view.scss"}],"components/login-view/login-view.scss":[function(require,module,exports) {
+
+var mapStateToProps = function mapStateToProps(state) {
+  console.log(state);
+  return {
+    user: state.user
+  };
+}; // #4
+
+
+var _default = (0, _reactRedux.connect)(mapStateToProps, {
+  setUser: _action.setUser
+})(MovieView); // MovieView.propTypes = {
+//   movie: PropTypes.shape({
+//     Title: PropTypes.string.isRequired,
+//     Description: PropTypes.string.isRequired,
+//     ImagePath: PropTypes.string.isRequired,
+//     Genre: PropTypes.shape({
+//       Name: PropTypes.string,
+//       Description: PropTypes.string
+//     }),
+//     Director: PropTypes.shape({
+//       Name: PropTypes.string,
+//       Bio: PropTypes.string,
+//       Birth: PropTypes.string,
+//       Death: PropTypes.string
+//     }),
+//     Featured: PropTypes.bool
+//   }).isRequired
+// };
+
+
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./movie-view.scss":"components/movie-view/movie-view.scss","../../action/action":"action/action.js","axios":"../node_modules/axios/index.js","react-redux":"../node_modules/react-redux/es/index.js"}],"components/login-view/login-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -53739,11 +53793,11 @@ var _action = require("../../action/action");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function LoginView(props) {
-  var user = props.user,
-      setUser = props.setUser;
+  var setUser = props.setUser;
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
+    console.log(e.target[1].value);
     /* Send a request to the server for authentication */
 
     _axios.default.post('http://phantasmophobia.herokuapp.com/login', {
@@ -53752,7 +53806,7 @@ function LoginView(props) {
     }).then(function (response) {
       var data = response.data;
       props.onLoggedIn(data);
-      props.setUser(data);
+      setUser(data);
     }).catch(function (e) {
       console.log('no such user');
     });
@@ -53793,7 +53847,12 @@ var _default = (0, _reactRedux.connect)(mapStateToProps, {
 })(LoginView);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./login-view.scss":"components/login-view/login-view.scss","../../action/action":"action/action.js"}],"components/profile-view/profile-view.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./login-view.scss":"components/login-view/login-view.scss","../../action/action":"action/action.js"}],"components/profile-view/profile-view.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/profile-view/profile-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -53808,6 +53867,8 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 var _axios = _interopRequireDefault(require("axios"));
 
 var _reactBootstrap = require("react-bootstrap");
+
+require("./profile-view.scss");
 
 var _reactRouterDom = require("react-router-dom");
 
@@ -53954,14 +54015,14 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
       }, _react.default.createElement("h3", null, "Date of Birth:"), _react.default.createElement(_reactBootstrap.Form.Label, null, this.state.birthday)), _react.default.createElement(_reactRouterDom.Link, {
         to: "/users/update/".concat(this.state.username)
       }, _react.default.createElement(_reactBootstrap.Button, {
-        variant: "outline-dark",
+        variant: "outline-light",
         type: "link",
         size: "sm",
         block: true
       }, "Edit Profile")), _react.default.createElement(_reactRouterDom.Link, {
         to: "/"
       }, _react.default.createElement(_reactBootstrap.Button, {
-        variant: "outline-dark",
+        variant: "outline-light",
         type: "submit",
         size: "sm",
         block: true
@@ -54000,7 +54061,7 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
 }(_react.default.Component);
 
 exports.ProfileView = ProfileView;
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","axios":"../node_modules/axios/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","./profile-view.scss":"components/profile-view/profile-view.scss","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/registration-view/registration-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -68950,8 +69011,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function ProfileUpdate(props) {
   var user = props.user,
       setUser = props.setUser,
@@ -68966,15 +69025,14 @@ function ProfileUpdate(props) {
   return _react.default.createElement(_formik.Formik, {
     validationSchema: schema,
     onSubmit: function onSubmit(values) {
-      var _axios$put;
-
       var token = localStorage.getItem('token');
 
-      _axios.default.put("http://phantasmophobia.herokuapp.com/users/update/".concat(localStorage.getItem('user')), (_axios$put = {
+      _axios.default.put("http://phantasmophobia.herokuapp.com/users/update/".concat(localStorage.getItem('user')), {
         username: values.username,
         password: values.password,
-        email: values.email
-      }, _defineProperty(_axios$put, "password", values.password), _defineProperty(_axios$put, "birthday", values.birthday), _axios$put), {
+        email: values.email,
+        birthday: values.birthday
+      }, {
         headers: {
           Authorization: "Bearer ".concat(token)
         }
@@ -68983,18 +69041,18 @@ function ProfileUpdate(props) {
         console.log(data);
         alert("Your profile was updated successfully");
         localStorage.setItem('user', data.username);
-        props.setUser(data);
-        props.onGoBack();
+        setUser(data);
+        onGoBack();
       }).catch(function (e) {
         console.log('error changing user information');
       });
     },
     initialValues: {
       password: '',
-      username: '',
+      username: user.username || '',
       confirmPassword: '',
-      email: '',
-      birthday: ''
+      email: user.email || '',
+      birthday: user.birthday || ''
     }
   }, function (_ref) {
     var handleSubmit = _ref.handleSubmit,
@@ -69307,7 +69365,7 @@ var _reactBootstrap = require("react-bootstrap");
 
 var _moviesList = _interopRequireDefault(require("../movies-list/movies-list"));
 
-var _movieView = require("../movie-view/movie-view");
+var _movieView = _interopRequireDefault(require("../movie-view/movie-view"));
 
 var _loginView = _interopRequireDefault(require("../login-view/login-view"));
 
@@ -69358,22 +69416,37 @@ var MainView = /*#__PURE__*/function (_React$Component) {
     _classCallCheck(this, MainView);
 
     _this = _super.call(this);
-    _this.state = {
-      user: null
-    };
+    _this.state = {};
     return _this;
   }
 
   _createClass(MainView, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      var _this2 = this;
+
       var accessToken = localStorage.getItem('token');
+      var storageUser = localStorage.getItem('user');
 
       if (accessToken !== null) {
-        this.setState({
-          user: localStorage.getItem('user')
-        });
         this.getMovies(accessToken);
+      }
+
+      console.log(this.props.user);
+
+      if (Object.entries(this.props.user).length === 0 && storageUser !== null) {
+        _axios.default.get("https://phantasmophobia.herokuapp.com/users/".concat(storageUser), {
+          headers: {
+            Authorization: "Bearer ".concat(accessToken)
+          }
+        }).then(function (response) {
+          _this2.props.setUser(response.data);
+
+          console.log('HERE');
+          console.log(response.data);
+        }).catch(function (error) {
+          console.log(error);
+        });
       }
     }
     /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
@@ -69382,9 +69455,6 @@ var MainView = /*#__PURE__*/function (_React$Component) {
     key: "onLoggedIn",
     value: function onLoggedIn(authData) {
       console.log(authData);
-      this.setState({
-        user: authData.user.username
-      });
       localStorage.setItem('token', authData.token);
       localStorage.setItem('user', authData.user.username);
       this.getMovies(authData.token);
@@ -69399,7 +69469,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getMovies",
     value: function getMovies(token) {
-      var _this2 = this;
+      var _this3 = this;
 
       _axios.default.get('https://phantasmophobia.herokuapp.com/movies', {
         headers: {
@@ -69407,7 +69477,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         }
       }).then(function (response) {
         // #1 Assign the result to the redux state
-        _this2.props.setMovies(response.data);
+        _this3.props.setMovies(response.data);
       }).catch(function (error) {
         console.log(error);
       });
@@ -69415,51 +69485,51 @@ var MainView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
-      var movies = this.props.movies;
-      var user = this.state.user; // If no user is logged in render the login view
+      var _this$props = this.props,
+          movies = _this$props.movies,
+          user = _this$props.user; // If no user is logged in render the login view
       // Before the movies have been loaded
 
       if (!movies) return _react.default.createElement("div", {
         className: "main-view"
       });
       return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement(_reactBootstrap.Navbar, {
-        bg: "dark",
+        className: "custom-nav",
         variant: "dark"
       }, _react.default.createElement(_reactBootstrap.Navbar.Brand, {
-        href: "#home"
+        href: "/"
       }, "Horror Hill"), _react.default.createElement(_reactBootstrap.Nav, {
-        className: "mr-auto nav-login"
+        className: "ml-auto profile-nav"
       }, _react.default.createElement(_reactRouterDom.Link, {
+        className: "profile-link",
         to: "/users/".concat(localStorage.getItem('user'))
-      }, localStorage.getItem('user')), _react.default.createElement(_Button.default, {
-        variant: "outline-light",
+      }, localStorage.getItem('user')), _react.default.createElement("p", {
+        className: "profile-link",
         onClick: function onClick() {
-          return _this3.onLogout();
+          return _this4.onLogout();
         }
       }, "Logout"))), _react.default.createElement(_reactBootstrap.Navbar, {
-        bg: "dark",
-        variant: "dark",
-        className: "lower-nav"
+        className: "custom-nav lower-nav",
+        variant: "dark"
       }, _react.default.createElement(_reactBootstrap.Nav, {
         className: "mr-auto"
       }, _react.default.createElement(_reactBootstrap.Nav.Link, {
-        to: "/movies",
-        href: "#home"
+        href: "/users/".concat(localStorage.getItem('user'))
       }, "Account"), _react.default.createElement(_reactBootstrap.Nav.Link, {
-        href: "#features"
-      }, "Movies"), _react.default.createElement(_reactBootstrap.Nav.Link, {
-        href: "#pricing"
-      }, "About"))), _react.default.createElement(_reactBootstrap.Container, null, _react.default.createElement(_Row.default, {
+        href: "/"
+      }, "Movies"))), _react.default.createElement(_reactBootstrap.Container, {
+        className: "main-view-box"
+      }, _react.default.createElement(_Row.default, {
         className: "main-view justify-content-md-center"
       }, _react.default.createElement(_reactRouterDom.Route, {
         exact: true,
         path: "/",
         render: function render() {
-          if (!user) return _react.default.createElement(_loginView.default, {
-            onLoggedIn: function onLoggedIn(user) {
-              return _this3.onLoggedIn(user);
+          if (Object.entries(user).length === 0) return _react.default.createElement(_loginView.default, {
+            onLoggedIn: function onLoggedIn(authData) {
+              return _this4.onLoggedIn(authData);
             }
           });
           return _react.default.createElement(_moviesList.default, {
@@ -69477,7 +69547,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           var match = _ref.match;
           return _react.default.createElement(_Col.default, {
             md: 8
-          }, _react.default.createElement(_movieView.MovieView, {
+          }, _react.default.createElement(_movieView.default, {
             movie: movies.find(function (m) {
               return m._id === match.params.movieId;
             })
@@ -69523,11 +69593,13 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       }), _react.default.createElement(_reactRouterDom.Route, {
         exact: true,
         path: "/users/update/:username",
-        onGoBack: function onGoBack() {
-          return history.goBack();
-        },
-        render: function render() {
-          return _react.default.createElement(_profileUpdate.default, null);
+        render: function render(_ref4) {
+          var history = _ref4.history;
+          return _react.default.createElement(_profileUpdate.default, {
+            onGoBack: function onGoBack() {
+              return history.goBack();
+            }
+          });
         }
       }))));
     }
@@ -69539,13 +69611,15 @@ var MainView = /*#__PURE__*/function (_React$Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    movies: state.movies
+    movies: state.movies,
+    user: state.user
   };
 }; // #4
 
 
 var _default = (0, _reactRedux.connect)(mapStateToProps, {
-  setMovies: _action.setMovies
+  setMovies: _action.setMovies,
+  setUser: _action.setUser
 })(MainView);
 
 exports.default = _default;
@@ -69588,7 +69662,7 @@ function movies() {
 }
 
 function user() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
@@ -69737,7 +69811,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65256" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59924" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

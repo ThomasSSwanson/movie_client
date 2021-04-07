@@ -1,28 +1,64 @@
-.card-body {
+.card-text {
   overflow: hidden;
-  max-height: 60px;
+  max-height: 40px;
 }
 
 .card {
-  background-color: #343a40;
+  background-color: #1E2127;
   color: #fff;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   margin: 10px;
 }
+.btn-outline-light {
+  color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.5);
+}
 nav {
   height: 40px;
+}
+
+.navbar-brand {
+  color: #007bff !important;
 }
 
 .lower-nav {
   margin-bottom: 10px;
 }
 
-.nav-login {
-  justify-content: flex-end;
+.custom-nav {
+  background-color: #1B1D24;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);
+}
+
+.main-view-box {
+  min-height: 90vh;
+}
+
+.profile-nav {
+  align-items: center;
+}
+
+.profile-link {
+  text-decoration: none;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0.5rem 1rem;
+  margin-bottom: 0;
+}
+
+.profile-link:hover {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.form-control {
+  background-color: #1B1D24;
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
 }
 .app-container {
-  background-color: #1E2127;
-  color: #fff;
+  background-color: #1B1D24;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 /*# sourceMappingURL=/src.78399e21.css.map */

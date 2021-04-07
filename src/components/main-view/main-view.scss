@@ -2,10 +2,44 @@ nav {
     height: 40px;
 }
 
+.navbar-brand {
+    color: #007bff !important;
+}
+
 .lower-nav {
     margin-bottom: 10px;
 }
 
-.nav-login {
-    justify-content: flex-end;
+.custom-nav {
+    background-color: #1B1D24;
+    border-bottom: .5px solid rgba(255,255,255,.2);
 }
+
+.main-view-box {
+    min-height: 90vh;
+}
+
+.profile-nav {
+    align-items: center;
+}
+
+.profile-link {
+    text-decoration: none;
+    background-color: transparent;
+    color: rgba(255,255,255,.5);
+    padding: .5rem 1rem;
+    margin-bottom: 0;
+    
+}
+
+.profile-link:hover {
+    color: rgba(255,255,255,.75);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-control {
+    background-color: #1B1D24;
+    border: .5px solid rgba(255,255,255,.2);
+}
+

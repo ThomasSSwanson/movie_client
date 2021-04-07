@@ -4,6 +4,8 @@ import axios from 'axios';
 
 import { Form, Button, Row, Col, Card } from 'react-bootstrap';
 
+import './profile-view.scss';
+
 import { Link } from 'react-router-dom';
 
 export class ProfileView extends React.Component {
@@ -102,7 +104,7 @@ export class ProfileView extends React.Component {
                   <Form.Label>{this.state.birthday}</Form.Label>
                 </Form.Group>
                   <Link to={`/users/update/${this.state.username}`}>
-                    <Button variant="outline-dark" 
+                    <Button variant="outline-light" 
                             type="link"
                             size="sm" 
                             block
@@ -111,7 +113,7 @@ export class ProfileView extends React.Component {
                     </Button>
                   </Link>
                 <Link to={`/`}>
-                  <Button variant="outline-dark" 
+                  <Button variant="outline-light" 
                           type="submit"
                           size="sm"
                           block
