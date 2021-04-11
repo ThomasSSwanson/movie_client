@@ -9,19 +9,17 @@ import './profile-update.scss';
 import axios from 'axios';
 import { setUser } from '../../action/action';
 
-
-
-export function ProfileUpdate(props) {
-
-  const { user, setUser, onGoBack } = props;
-
-  const schema = yup.object().shape({
+const schema = yup.object().shape({
     password: yup.string().required(),
     username: yup.string().required(),
     email: yup.string().required(),
     confirmPassword: yup.string().required(),
     birthday: yup.date().required()
   });
+
+export function ProfileUpdate(props) {
+
+  const { user, setUser, onGoBack } = props;
 
   return (
     <Formik

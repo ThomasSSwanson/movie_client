@@ -17,7 +17,6 @@ export function LoginView(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target[1].value)
     /* Send a request to the server for authentication */
     axios.post('http://phantasmophobia.herokuapp.com/login', {
       username: e.target[0].value,
@@ -26,7 +25,7 @@ export function LoginView(props) {
     .then(response => {
       const data = response.data;
       props.onLoggedIn(data);
-      setUser(data);
+      setUser(data.user);
     })
     .catch(e => {
       console.log('no such user')

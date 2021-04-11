@@ -1,3 +1,5 @@
+// style
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -8,53 +10,26 @@ import './profile-view.scss';
 
 import { Link } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+
+
 export class ProfileView extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      username: "",
-      password: "",
-      email: "",
-      birthday: "",
-      favoriteMovies: [],
-      movies: ""
-    }
-  }
-
-  componentDidMount() {
-    let accessToken = localStorage.getItem('token');
-    this.getUser(accessToken);
+    
+    this.state = {};
   }
   
-  getUser(token) {
-    axios.get(`https://phantasmophobia.herokuapp.com/users/${localStorage.getItem('user')}`, {
-      headers: { Authorization: `Bearer ${token}`}
-    })
-    .then(response => {
-      // Assign the result to the state
-      this.setState({
-        username: response.data.username,
-        password: response.data.password,
-        email: response.data.email,
-        birthday: response.data.birthday,
-        favoriteMovies: response.data.favoriteMovies
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
 
   deleteUser() {
-    let user = localStorage.getItem('user');
+    let storageUser = localStorage.getItem('user');
     let token = localStorage.getItem('token');
 
-    axios.delete(`https://phantasmophobia.herokuapp.com/users/${user}`, {
+    axios.delete(`https://phantasmophobia.herokuapp.com/users/${storageUser}`, {
       headers: {Authorization: `Bearer ${token}`}
     })
     .then(response => {
-      alert(user + 'has been deleted');
+      alert(storageUser + 'has been deleted');
       localStorage.removeItem('user');
       localStorage.removeItem('token');
       window.location.pathname = '/';
@@ -77,11 +52,10 @@ export class ProfileView extends React.Component {
   }
 
   render() {
-    const {movies} = this.props;
-    const {favoriteMovies} = this.state
-
+    const {movies, user} = this.props;
+    console.log(user);
     const favoriteMovieList = movies.filter((movie) => {
-      return favoriteMovies.includes(movie._id);
+      return user.favoriteMovies.includes(movie._id);
     });
 
     if (!movies) alert("Please sign in");
@@ -93,17 +67,17 @@ export class ProfileView extends React.Component {
                 <h1 style={{ textAlign: "center" }}>Profile Details</h1>
                 <Form.Group controlId="formBasicUsername">
                   <h3>Username: </h3>
-                  <Form.Label>{this.state.username}</Form.Label>
+                  <Form.Label>{user.username}</Form.Label>
                 </Form.Group>
                 <Form.Group controlId="formBasicEmail">
                   <h3>Email:</h3>
-                  <Form.Label>{this.state.email}</Form.Label>
+                  <Form.Label>{user.email}</Form.Label>
                 </Form.Group>
                 <Form.Group controlId="formBasicDate">
                   <h3>Date of Birth:</h3>
-                  <Form.Label>{this.state.birthday}</Form.Label>
+                  <Form.Label>{user.birthday}</Form.Label>
                 </Form.Group>
-                  <Link to={`/users/update/${this.state.username}`}>
+                  <Link to={`/users/update/${user.username}`}>
                     <Button variant="outline-light" 
                             type="link"
                             size="sm" 
@@ -162,7 +136,11 @@ export class ProfileView extends React.Component {
             </Col>
       </Row>
     )}
-
-
-
 }
+
+let mapStateToProps = state => {
+  return { user: state.user }
+}
+
+// #4
+export default connect(mapStateToProps)(ProfileView);

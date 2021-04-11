@@ -1,3 +1,6 @@
+// rem vs px
+// why does account button break but the other button doesnt?
+
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -16,8 +19,8 @@ import { Nav, Navbar, Form, FormControl, Container } from 'react-bootstrap'
 
 import MoviesList from '../movies-list/movies-list';
 import MovieView from '../movie-view/movie-view';
-import  LoginView from '../login-view/login-view';
-import { ProfileView } from '../profile-view/profile-view';
+import LoginView from '../login-view/login-view';
+import ProfileView from '../profile-view/profile-view';
 import { RegistrationView } from '../registration-view/registration-view';
 import ProfileUpdate from '../profile-update/profile-update'
 import { DirectorView } from '../director-view/director-view'
@@ -34,7 +37,7 @@ class MainView extends React.Component {
 
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
-    let storageUser = localStorage.getItem('user')
+    let storageUser = localStorage.getItem('user');
     if (accessToken !== null) {
       this.getMovies(accessToken);
     }

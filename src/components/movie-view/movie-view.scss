@@ -1,0 +1,52 @@
+.single-movie-card {
+    padding-top: 20px;
+}
+
+.movie-title {
+    font-size: 150%;
+    color: #fff;
+    display: inline;
+    margin-bottom: 0;
+}
+
+.title-box {
+    padding-bottom: 10px;
+    border-bottom: .5px solid rgba(255,255,255,.2);
+    display: flex;
+    
+}
+
+.description {
+    font-weight: 200;
+    font-size: 85%;
+    letter-spacing: 1px;
+}
+
+.description-text {
+    color: rgba(255,255,255,.7);;
+}
+
+.heart {
+    font-size: 150%;
+    color: #007bff;
+}
+
+.heart-box {
+    margin-left: auto;
+    align-self: center;
+    cursor: pointer;
+    
+}
+
+.director-genre-box {
+    display: flex;
+    justify-content: space-around;
+    border-top: .5px solid rgba(255,255,255,.2);
+}
+
+// .director-genre {
+// }
+
+.director-genre-button {
+    padding: 0 !important;
+}
