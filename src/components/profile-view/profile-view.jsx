@@ -1,58 +1,37 @@
+// style
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import { Form, Button, Row, Col, Card } from 'react-bootstrap';
 
+import './profile-view.scss';
+
 import { Link } from 'react-router-dom';
+
+import { connect } from 'react-redux';
+
+import { setUser } from '../../action/action';
+
 
 export class ProfileView extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      username: "",
-      password: "",
-      email: "",
-      birthday: "",
-      favoriteMovies: [],
-      movies: ""
-    }
-  }
-
-  componentDidMount() {
-    let accessToken = localStorage.getItem('token');
-    this.getUser(accessToken);
+    
+    this.state = {};
   }
   
-  getUser(token) {
-    axios.get(`https://phantasmophobia.herokuapp.com/users/${localStorage.getItem('user')}`, {
-      headers: { Authorization: `Bearer ${token}`}
-    })
-    .then(response => {
-      // Assign the result to the state
-      this.setState({
-        username: response.data.username,
-        password: response.data.password,
-        email: response.data.email,
-        birthday: response.data.birthday,
-        favoriteMovies: response.data.favoriteMovies
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
 
   deleteUser() {
-    let user = localStorage.getItem('user');
+    let storageUser = localStorage.getItem('user');
     let token = localStorage.getItem('token');
 
-    axios.delete(`https://phantasmophobia.herokuapp.com/users/${user}`, {
+    axios.delete(`https://phantasmophobia.herokuapp.com/users/${storageUser}`, {
       headers: {Authorization: `Bearer ${token}`}
     })
     .then(response => {
-      alert(user + 'has been deleted');
+      alert(storageUser + 'has been deleted');
       localStorage.removeItem('user');
       localStorage.removeItem('token');
       window.location.pathname = '/';
@@ -69,98 +48,115 @@ export class ProfileView extends React.Component {
         headers: { Authorization: `Bearer ${token}`}
       })
       .then((response) => {
-        console.log(response);
-        this.componentDidMount();
+        this.props.setUser(response.data);
       });
   }
 
+
   render() {
-    const {movies} = this.props;
-    const {favoriteMovies} = this.state
+    const {movies, user} = this.props;
+    
+    if (Object.keys(user).length === 0) return <div className="main-view"/>;
 
     const favoriteMovieList = movies.filter((movie) => {
-      return favoriteMovies.includes(movie._id);
+      return user.favoriteMovies.includes(movie._id);
     });
-
-    if (!movies) alert("Please sign in");
+    
 
     return(
+      <React.Fragment>
       <Row className='profile-view'>
+        <Col md={12}>
+          <h1>Profile Details</h1>
+        </Col>
         <Col>
-              <Form style={{ width: "24rem", float: "left" }}>
-                <h1 style={{ textAlign: "center" }}>Profile Details</h1>
-                <Form.Group controlId="formBasicUsername">
-                  <h3>Username: </h3>
-                  <Form.Label>{this.state.username}</Form.Label>
-                </Form.Group>
-                <Form.Group controlId="formBasicEmail">
-                  <h3>Email:</h3>
-                  <Form.Label>{this.state.email}</Form.Label>
-                </Form.Group>
-                <Form.Group controlId="formBasicDate">
-                  <h3>Date of Birth:</h3>
-                  <Form.Label>{this.state.birthday}</Form.Label>
-                </Form.Group>
-                  <Link to={`/users/update/${this.state.username}`}>
-                    <Button variant="outline-dark" 
-                            type="link"
-                            size="sm" 
-                            block
-                    >
-                      Edit Profile
-                    </Button>
-                  </Link>
-                <Link to={`/`}>
-                  <Button variant="outline-dark" 
-                          type="submit"
-                          size="sm"
-                          block
-                  >
-                    Back to Main
-                  </Button>
-                </Link>
-                <Button variant="outline-danger" 
-                        size="sm"
+          <Form style={{ width: "24rem", float: "left" }}>
+            
+            <Form.Group controlId="formBasicUsername">
+              <h3>Username: </h3>
+              <Form.Label>{user.username}</Form.Label>
+            </Form.Group>
+            <Form.Group controlId="formBasicEmail">
+              <h3>Email:</h3>
+              <Form.Label>{user.email}</Form.Label>
+            </Form.Group>
+            <Form.Group controlId="formBasicDate">
+              <h3>Date of Birth:</h3>
+              <Form.Label>{user.birthday}</Form.Label>
+            </Form.Group>
+              <Link to={`/users/update/${user.username}`}>
+                <Button variant="outline-light" 
+                        type="link"
+                        size="sm" 
                         block
-                        onClick={() => this.deleteUser()}
                 >
-                  Delete Account
+                  Edit Profile
                 </Button>
-                
-              </Form>
-            </Col>
-            <Col>
-              <div
-                className="favoriteMovies"
-                style={{
-                  float: "right",
-                  textAlign: "center",
-                  width: "24rem",
-                }}
+              </Link>
+            <Link to={`/`}>
+              <Button variant="outline-light" 
+                      type="submit"
+                      size="sm"
+                      block
               >
-                <h1>Favorite Movies</h1>
-                {favoriteMovieList.map((movie) => {
-                  return (
-                    <div key={movie._id}>
-                      <Card>
-                      <Card.Img variant="top" src={movie.ImagePath} />
-                        <Card.Body>
-                          <Link to={`/movies/${movie._id}`}>
-                            <Card.Title>{movie.Title}</Card.Title>
-                          </Link>
-                        </Card.Body>
-                      </Card>
-                      <Button onClick={() => this.deleteFavorite(movie)}>
-                        Remove
-                      </Button>
-                    </div>
-                  );
-                })}
-              </div>
-            </Col>
+                Back to Main
+              </Button>
+            </Link>
+            <Button variant="outline-danger" 
+                    size="sm"
+                    block
+                    onClick={() => this.deleteUser()}
+            >
+              Delete Account
+            </Button>
+            
+          </Form>
+        </Col>
       </Row>
+        
+        <Row>
+          <Col md={12}>
+            <h1>Favorite Movies</h1>
+          </Col>
+            {favoriteMovieList.map((movie) => {
+              return (
+                <Col md={4} className="profile-card">
+                    <Card>
+                      <Card.Body></Card.Body>
+                      <Card.Img variant="top" src={movie.ImagePath} />
+                      <Card.Body>
+                        <Link to={`/movies/${movie._id}`}>
+                          <Card.Title>{movie.Title}</Card.Title>
+                        </Link>
+                        <Button onClick={() => this.deleteFavorite(movie)}>
+                          Remove
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                </Col>
+              );
+            })}
+          
+        
+  </Row>
+  </React.Fragment>
     )}
-
-
-
 }
+
+let mapStateToProps = state => {
+  return { user: state.user }
+}
+
+// #4
+export default connect(mapStateToProps, {setUser})(ProfileView);
+
+ProfileView.propTypes = {
+  user: PropTypes.shape({
+    favoriteMovies: PropTypes.array,
+    username: PropTypes.string,
+    password: PropTypes.string,
+    email: PropTypes.string,
+    birthday: PropTypes.string
+  }),
+  movies: PropTypes.array.isRequired
+};

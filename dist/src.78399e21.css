@@ -1,23 +1,156 @@
-.card-body {
-  overflow: hidden;
-  max-height: 40px;
+.card {
+  background-color: #1E2127;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 10px;
+  padding: 0 20px;
 }
 
-.card {
-  background-color: #343a40;
+.card-body {
+  padding: 20px 0;
+}
+
+.upper-card {
+  max-height: 60px;
+  font-size: 90%;
+  overflow: hidden;
+  margin-bottom: 20px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.card-name {
+  padding: 15px 0;
+}
+
+.lower-card {
+  border-top: 0.5px solid rgba(255, 255, 255, 0.2);
+  padding: 5px 0;
+  font-size: 90%;
+}
+
+.truncate {
+  padding-bottom: 5px;
+}
+
+.card-img-top {
+  height: 15rem;
+  width: 100%;
+  object-fit: cover;
+}
+.single-movie-card {
+  padding-top: 20px;
+}
+
+.movie-title {
+  font-size: 150%;
   color: #fff;
-  box-shadow: 0 4px 8px 0 rgba(250, 5, 5, 0.2);
-  margin: 10px;
+  display: inline;
+  margin-bottom: 0;
+}
+
+.title-box {
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+}
+
+.description {
+  font-weight: 200;
+  font-size: 85%;
+  letter-spacing: 1px;
+}
+
+.description-text {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.heart {
+  font-size: 150%;
+  color: #007bff;
+}
+
+.heart-box {
+  margin-left: auto;
+  align-self: center;
+  cursor: pointer;
+}
+
+.director-genre-box {
+  display: flex;
+  justify-content: space-around;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.2);
+}
+
+.director-genre-button {
+  padding: 0 !important;
+}
+.btn-outline-light {
+  color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.profile-card {
+  text-align: center;
+}
+
+.profile-view {
+  margin-bottom: 1rem;
+}
+.description-text {
+  font-size: 95%;
+  font-weight: 300;
+}
+.description-text {
+  font-size: 95%;
+  font-weight: 300;
 }
 nav {
   height: 40px;
 }
 
+.navbar-brand {
+  color: #007bff !important;
+}
+
 .lower-nav {
   margin-bottom: 10px;
 }
+
+.custom-nav {
+  background-color: #1B1D24;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);
+}
+
+.main-view-box {
+  min-height: 90vh;
+}
+
+.profile-nav {
+  align-items: center;
+}
+
+.profile-link {
+  text-decoration: none;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0.5rem 1rem;
+  margin-bottom: 0;
+}
+
+.profile-link:hover {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.form-control {
+  background-color: #1B1D24;
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+}
 .app-container {
-  background-color: #1E2127;
+  background-color: #1B1D24;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: "Oswald", sans-serif;
 }
 
 /*# sourceMappingURL=/src.78399e21.css.map */

@@ -1,3 +1,7 @@
+// make sure pass and confirm pass are the same before sending
+// add form validation
+// get rid of window.open?
+
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -7,24 +11,18 @@ import './registration-view.scss';
 import axios from 'axios';
 
 export function RegistrationView(props) {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [birthday, setBirthday] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
     axios.post('http://phantasmophobia.herokuapp.com/users', {
-      username: username,
-      password: password,
-      email: email,
-      birthday: birthday
+      username: e.target[0].value,
+      email: e.target[1].value,
+      password: e.target[2].value,
+      birthday: e.target[4].value
     })
     .then(response => {
       const data = response.data;
-      console.log(data);
       window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
     })
     .catch(e => {
@@ -34,15 +32,13 @@ export function RegistrationView(props) {
 
   return (
     <React.Fragment>
-      <Form className='form-register'>
+      <Form className='form-register' onSubmit={handleSubmit}>
         <h1>Welcome to Horror Movies and Chill</h1>
         <p>Please register to continue.</p>
         <Form.Group controlId='formBasicText'>
           <Form.Label>Username</Form.Label>
           <Form.Control
-            type='text'
-            value={username}
-            onChange={e => setUsername(e.target.value)}
+            type='username'
             placeholder='Enter Username'
           />
         </Form.Group>
@@ -50,8 +46,6 @@ export function RegistrationView(props) {
           <Form.Label>Email</Form.Label>
           <Form.Control
             type='email'
-            value={email}
-            onChange={e => setEmail(e.target.value)}
             placeholder='Enter Email'
           />
         </Form.Group>
@@ -59,8 +53,6 @@ export function RegistrationView(props) {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type='password'
-            value={password}
-            onChange={e => setPassword(e.target.value)}
             placeholder='Enter Password'
           />
         </Form.Group>
@@ -68,8 +60,6 @@ export function RegistrationView(props) {
           <Form.Label>Confirm Password</Form.Label>
           <Form.Control
             type='password'
-            value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
             placeholder='Enter Confirm Password'
           />
         </Form.Group>
@@ -77,13 +67,11 @@ export function RegistrationView(props) {
           <Form.Label>Birthday</Form.Label>
           <Form.Control
             type='date'
-            value={birthday}
-            onChange={(e) => setBirthday(e.target.value)}
             placeholder='Enter Birthday'
           />
         </Form.Group>
 
-        <Button onClick={handleSubmit} variant='primary' type='submit'>
+        <Button variant='primary' type='submit'>
           Submit
         </Button>
       </Form>

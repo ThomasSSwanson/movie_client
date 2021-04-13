@@ -9,32 +9,13 @@ import './profile-update.scss';
 import axios from 'axios';
 import { setUser } from '../../action/action';
 
+const onSubmit = values => {
+  let token = localStorage.getItem('token');
 
-
-export function ProfileUpdate(props) {
-
-  const { user, setUser } = props;
-
-  const schema = yup.object().shape({
-    password: yup.string().required(),
-    username: yup.string().required(),
-    email: yup.string().required(),
-    confirmPassword: yup.string().required(),
-    birthday: yup.date().required()
-  });
-
-  return (
-    <Formik
-      validationSchema={schema}
-      onSubmit={values => {
-
-        let token = localStorage.getItem('token');
-
-        axios.put(`http://phantasmophobia.herokuapp.com/users/update/${localStorage.getItem('user')}`, {
+        return axios.put(`http://phantasmophobia.herokuapp.com/users/update/${localStorage.getItem('user')}`, {
           username: values.username,
           password: values.password,
           email: values.email,
-          password: values.password,
           birthday: values.birthday
         },
         {
@@ -42,22 +23,40 @@ export function ProfileUpdate(props) {
         })
         .then(response => {
           const data = response.data;
-          console.log(data);
           alert("Your profile was updated successfully");
-          localStorage.setItem('user', data.username)
-          props.setUser(data);
-          window.open(`/users/${localStorage.getItem('user')}`, '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+          localStorage.setItem('user', data.username);
+          return data;
         })
         .catch(e => {
           console.log('error changing user information')
         });
-      }}
+}
+
+const schema = yup.object().shape({
+    password: yup.string().required(),
+    username: yup.string().required(),
+    email: yup.string().required(),
+    confirmPassword: yup.string().required(),
+    birthday: yup.date().required()
+  });
+
+export function ProfileUpdate(props) {
+
+  const { user, setUser, onGoBack } = props;
+
+  return (
+    <Formik
+      validationSchema={schema}
+      onSubmit={values => onSubmit(values).then(data => {
+        setUser(data);
+        onGoBack();
+      })}
       initialValues={{
         password: '',
-        username: '',
+        username: user.username || '',
         confirmPassword: '',
-        email: '',
-        birthday: ''
+        email: user.email || '',
+        birthday: user.birthday || ''
       }}
     >
       {({
@@ -159,3 +158,13 @@ let mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, { setUser } )(ProfileUpdate);
+
+ProfileUpdate.propTypes = {
+  user: PropTypes.shape({
+    favoriteMovies: PropTypes.array,
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    birthday: PropTypes.string.isRequired
+  })
+};

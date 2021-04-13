@@ -13,7 +13,7 @@ import { setUser } from '../../action/action';
 
 
 export function LoginView(props) {
-  const { user, setUser } = props;
+  const { setUser } = props;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +25,7 @@ export function LoginView(props) {
     .then(response => {
       const data = response.data;
       props.onLoggedIn(data);
-      props.setUser(data);
+      setUser(data.user);
     })
     .catch(e => {
       console.log('no such user')
@@ -62,3 +62,7 @@ let mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, { setUser } )(LoginView);
+
+LoginView.propTypes = {
+  setUser: PropTypes.func.isRequired
+}
