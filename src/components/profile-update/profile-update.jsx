@@ -9,6 +9,29 @@ import './profile-update.scss';
 import axios from 'axios';
 import { setUser } from '../../action/action';
 
+const onSubmit = values => {
+  let token = localStorage.getItem('token');
+
+        return axios.put(`http://phantasmophobia.herokuapp.com/users/update/${localStorage.getItem('user')}`, {
+          username: values.username,
+          password: values.password,
+          email: values.email,
+          birthday: values.birthday
+        },
+        {
+          headers: { Authorization: `Bearer ${token}`}
+        })
+        .then(response => {
+          const data = response.data;
+          alert("Your profile was updated successfully");
+          localStorage.setItem('user', data.username);
+          return data;
+        })
+        .catch(e => {
+          console.log('error changing user information')
+        });
+}
+
 const schema = yup.object().shape({
     password: yup.string().required(),
     username: yup.string().required(),
@@ -24,31 +47,10 @@ export function ProfileUpdate(props) {
   return (
     <Formik
       validationSchema={schema}
-      onSubmit={values => {
-
-        let token = localStorage.getItem('token');
-
-        axios.put(`http://phantasmophobia.herokuapp.com/users/update/${localStorage.getItem('user')}`, {
-          username: values.username,
-          password: values.password,
-          email: values.email,
-          birthday: values.birthday
-        },
-        {
-          headers: { Authorization: `Bearer ${token}`}
-        })
-        .then(response => {
-          const data = response.data;
-          console.log(data);
-          alert("Your profile was updated successfully");
-          localStorage.setItem('user', data.username)
-          setUser(data);
-          onGoBack();
-        })
-        .catch(e => {
-          console.log('error changing user information')
-        });
-      }}
+      onSubmit={values => onSubmit(values).then(data => {
+        setUser(data);
+        onGoBack();
+      })}
       initialValues={{
         password: '',
         username: user.username || '',
@@ -156,3 +158,13 @@ let mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, { setUser } )(ProfileUpdate);
+
+ProfileUpdate.propTypes = {
+  user: PropTypes.shape({
+    favoriteMovies: PropTypes.array,
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    birthday: PropTypes.string.isRequired
+  })
+};

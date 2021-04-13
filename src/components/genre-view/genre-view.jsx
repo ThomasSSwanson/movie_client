@@ -13,8 +13,6 @@ export class GenreView extends React.Component {
   render() {
     const { genre, movies } = this.props;
 
-    if (!movies) return console.log('NO MOVIES');
-
     return(
       <React.Fragment>
         <Row>
@@ -50,3 +48,11 @@ export class GenreView extends React.Component {
     );
   }
 }
+
+GenreView.propTypes = {
+  movie: PropTypes.array.isRequired,
+  genre: PropTypes.shape({
+    Name: PropTypes.string,
+    Description: PropTypes.string
+  })
+};

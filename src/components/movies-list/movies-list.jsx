@@ -9,6 +9,8 @@ import { MovieCard } from '../movie-card/movie-card';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+import PropTypes from 'prop-types';
+
 
 const mapStateToProps = state => {
   const { visibilityFilter } = state;
@@ -42,3 +44,22 @@ function MoviesList(props) {
 }
 
 export default connect(mapStateToProps)(MoviesList);
+
+MoviesList.propTypes = {
+  movie: PropTypes.shape({
+    Title: PropTypes.string.isRequired,
+    Description: PropTypes.string.isRequired,
+    ImagePath: PropTypes.string.isRequired,
+    Genre: PropTypes.shape({
+      Name: PropTypes.string,
+      Description: PropTypes.string
+    }),
+    Director: PropTypes.shape({
+      Name: PropTypes.string,
+      Bio: PropTypes.string,
+      Birth: PropTypes.string,
+      Death: PropTypes.string
+    }),
+    Featured: PropTypes.bool
+  })
+};

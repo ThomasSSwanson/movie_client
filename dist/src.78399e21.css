@@ -33,8 +33,9 @@
 }
 
 .card-img-top {
-  height: 250px;
+  height: 15rem;
   width: 100%;
+  object-fit: cover;
 }
 .single-movie-card {
   padding-top: 20px;
@@ -86,6 +87,14 @@
 .btn-outline-light {
   color: rgba(255, 255, 255, 0.5);
   border-color: rgba(255, 255, 255, 0.5);
+}
+
+.profile-card {
+  text-align: center;
+}
+
+.profile-view {
+  margin-bottom: 1rem;
 }
 .description-text {
   font-size: 95%;

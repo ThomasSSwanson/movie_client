@@ -62,3 +62,7 @@ let mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, { setUser } )(LoginView);
+
+LoginView.propTypes = {
+  setUser: PropTypes.func.isRequired
+}

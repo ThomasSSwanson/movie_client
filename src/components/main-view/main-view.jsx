@@ -40,31 +40,24 @@ class MainView extends React.Component {
     let storageUser = localStorage.getItem('user');
     if (accessToken !== null) {
       this.getMovies(accessToken);
+      this.loadUser(accessToken, storageUser);
     }
+  }
 
-    console.log(this.props.user);
-
-    if (Object.entries(this.props.user).length === 0 && storageUser !== null) {
-      axios.get(`https://phantasmophobia.herokuapp.com/users/${storageUser}`, {
-      headers: { Authorization: `Bearer ${accessToken}`}
+  loadUser(token, storageUser) {
+    axios.get(`https://phantasmophobia.herokuapp.com/users/${storageUser}`, {
+      headers: { Authorization: `Bearer ${token}`}
     })
     .then(response => {
         this.props.setUser(response.data)
-        console.log('HERE');
-        console.log(response.data)
     })
     .catch(function (error) {
       console.log(error);
     });
-    } 
   }
-
   /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
 
   onLoggedIn(authData) {
-
-    console.log(authData);
-
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.username);
     this.getMovies(authData.token);
@@ -92,10 +85,6 @@ class MainView extends React.Component {
 
   render() {
     let { movies, user } = this.props;
-    
-
-    // If no user is logged in render the login view
-    
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view"/>;
@@ -106,8 +95,8 @@ class MainView extends React.Component {
         <Navbar className="custom-nav" variant="dark">
           <Navbar.Brand href={`/`}>Horror Hill</Navbar.Brand>
           <Nav className="ml-auto profile-nav">
-            <Link className="profile-link" to={`/users/${localStorage.getItem('user')}`}>
-              {localStorage.getItem('user')}
+            <Link className="profile-link" to={`/users/${user.username}`}>
+              Account
             </Link>
             <p className="profile-link" onClick={() => this.onLogout()}>Logout</p>
           </Nav>
@@ -115,7 +104,6 @@ class MainView extends React.Component {
 
         <Navbar className="custom-nav lower-nav" variant="dark">
           <Nav className="mr-auto">
-            <Nav.Link href={`/users/${localStorage.getItem('user')}`}>Account</Nav.Link>
             <Nav.Link href={`/`}>Movies</Nav.Link>
           </Nav>
         </Navbar>
@@ -124,7 +112,7 @@ class MainView extends React.Component {
           <Row className="main-view justify-content-md-center">
 
             <Route exact path="/" render={() => {
-              if (Object.entries(user).length === 0) return <LoginView onLoggedIn={authData => this.onLoggedIn(authData)}/>;
+              if (localStorage.getItem('user') === null) return <LoginView onLoggedIn={authData => this.onLoggedIn(authData)}/>;
               return <MoviesList movies={ movies }/>}}/>
             
             <Route path="/register" render={() => <RegistrationView />} />

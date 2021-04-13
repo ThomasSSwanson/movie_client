@@ -27,13 +27,13 @@ export class MovieView extends React.Component {
 
   onFavorite(id) {
     let token = localStorage.getItem('token');
-    axios.post(`https://phantasmophobia.herokuapp.com/users/${this.props.user.username}/movies/${id}`, {
+    axios.post(`https://phantasmophobia.herokuapp.com/users/${this.props.user.username}/movies/${id}`,
+    {}, {
       headers: { Authorization: `Bearer ${token}`}
     })
     .then(response => {
       // Assign the result to the redux state
-        console.log(response.data);
-        // this.props.setUser(response.data);
+        this.props.setUser(response.data);
     })
     .catch(function (error) {
       console.log(error);
@@ -90,28 +90,27 @@ export class MovieView extends React.Component {
 }
 
 let mapStateToProps = state => {
-  console.log(state);
   return { user: state.user }
 }
 
 // #4
 export default connect(mapStateToProps, { setUser } )(MovieView);
 
-// MovieView.propTypes = {
-//   movie: PropTypes.shape({
-//     Title: PropTypes.string.isRequired,
-//     Description: PropTypes.string.isRequired,
-//     ImagePath: PropTypes.string.isRequired,
-//     Genre: PropTypes.shape({
-//       Name: PropTypes.string,
-//       Description: PropTypes.string
-//     }),
-//     Director: PropTypes.shape({
-//       Name: PropTypes.string,
-//       Bio: PropTypes.string,
-//       Birth: PropTypes.string,
-//       Death: PropTypes.string
-//     }),
-//     Featured: PropTypes.bool
-//   }).isRequired
-// };
+MovieView.propTypes = {
+  movie: PropTypes.shape({
+    Title: PropTypes.string.isRequired,
+    Description: PropTypes.string.isRequired,
+    ImagePath: PropTypes.string.isRequired,
+    Genre: PropTypes.shape({
+      Name: PropTypes.string,
+      Description: PropTypes.string
+    }),
+    Director: PropTypes.shape({
+      Name: PropTypes.string,
+      Bio: PropTypes.string,
+      Birth: PropTypes.string,
+      Death: PropTypes.string
+    }),
+    Featured: PropTypes.bool
+  })
+};

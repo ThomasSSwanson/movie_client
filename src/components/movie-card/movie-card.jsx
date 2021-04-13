@@ -4,7 +4,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
-import Col from 'react-bootstrap/Col'
 
 import { Link } from "react-router-dom";
 import './movie-card.scss';
@@ -18,9 +17,7 @@ export class MovieCard extends React.Component {
 
     return (
         <Card>
-          
           <Card.Body className="card-name">{movie.Title}</Card.Body>
-          
           <Card.Img variant="top" src={movie.ImagePath} />
           <Card.Body className="upper-card">
             <Card.Text className="truncate">{movie.Description}</Card.Text>
@@ -53,6 +50,6 @@ MovieCard.propTypes = {
       Death: PropTypes.string
     }),
     Featured: PropTypes.bool
-  }).isRequired
+  })
 };
 
